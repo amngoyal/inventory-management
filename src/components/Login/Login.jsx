@@ -11,6 +11,10 @@ class Login extends Component {
         password: ''
     }
 
+    handleSubmitClick = () => {
+        this.props.history.push('/');
+    }
+
     render() {
 
         const { userId, password } = this.state;
@@ -28,7 +32,7 @@ class Login extends Component {
 
                         <h1>Aggrawal Provision Store</h1>
 
-                        <form className={classes.form}>
+                        <form className={classes.form} onSubmit={this.handleSubmitClick}>
 
                             <TextField
                                 className={classes.formInput}
@@ -45,7 +49,7 @@ class Login extends Component {
                                 value={password}
                                 onChange={(e) => this.setState({ password: e.target.value })}
                             />
-                            <Button variant="contained" color="primary">Submit</Button>
+                            <Button type="submit" variant="contained" color="primary" >Submit</Button>
                         </form>
                     </div>
                 </div>
