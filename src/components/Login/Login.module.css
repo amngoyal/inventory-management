@@ -1,0 +1,95 @@
+.login {
+    background-image: url(../../assets/bg.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    margin: 40px 0;
+    min-height: 65vh;
+    width: 75%;
+    padding: 40px;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    box-shadow: 0 5px 10px rgba(154, 160, 185, .05), 0 15px 40px rgba(166, 173, 201, .2);
+}
+
+.cardLeft {
+    flex: 0.5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.img {
+    width: 90%;
+}
+
+.cardRight {
+    flex: 0.5;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.cardRight>h1 {
+    text-transform: capitalize;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.form {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.formInput {
+    width: 70%;
+    margin-bottom: 30px !important;
+}
+
+@media(max-width: 850px) {
+    .card {
+        width: 80%;
+        padding: 30px;
+    }
+}
+
+@media(max-width: 700px) {
+    .cardLeft {
+        display: none;
+    }
+    .cardRight {
+        flex: 1;
+    }
+    .card {
+        width: 75%;
+    }
+}
+
+@media(max-width: 600px) {
+    .cardRight {
+        width: 90%;
+    }
+}
+
+@media(max-width: 500px) {
+    .formInput {
+        width: 100%;
+    }
+}
