@@ -4,15 +4,28 @@ import classes from './Login.module.css';
 import loginImg from '../../assets/login.svg';
 import { Button, TextField } from '@material-ui/core';
 import wave from '../../assets/wave.svg';
+import instance from '../../axios';
 class Login extends Component {
 
     state = {
-        userId: '',
-        password: ''
+        userId: 'AGS01',
+        password: 'ags@1234'
     }
 
-    handleSubmitClick = () => {
-        this.props.history.push('/');
+    handleSubmitClick = async (e) => {
+        e.preventDefault();
+        console.log("clicked");
+
+        const { userId, password } = this.state;
+        instance.post('/login', { userId, password })
+            .then(res => {
+                console.log(res);
+                this.props.history.push('/');
+
+            })
+            .catch(err => {
+                console.log(err);
+            })
     }
 
     render() {
@@ -41,7 +54,7 @@ class Login extends Component {
                                 variant="outlined"
                                 placeholder="User Id"
                                 value={userId}
-                                onChange={(e) => this.setState({ userId: e.target.value })}
+                                onChange={(e) => this.setState({ userId: e.target.value.toUpperCase() })}
                             />
 
                             <TextField
