@@ -8,6 +8,17 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.wave {
+    width: 100%;
+    position: absolute;
+    bottom: 0px;
+    transform: translateY(40px);
+    background-size: cover;
+    z-index: 0;
 }
 
 .card {
@@ -21,6 +32,7 @@
     justify-content: center;
     border-radius: 16px;
     box-shadow: 0 5px 10px rgba(154, 160, 185, .05), 0 15px 40px rgba(166, 173, 201, .2);
+    z-index: 1;
 }
 
 .cardLeft {
@@ -68,6 +80,9 @@
         width: 80%;
         padding: 30px;
     }
+    .wave {
+        transform: translateY(10px);
+    }
 }
 
 @media(max-width: 700px) {
@@ -79,6 +94,9 @@
     }
     .card {
         width: 75%;
+    }
+    .wave {
+        display: none;
     }
 }
 

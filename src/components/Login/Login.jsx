@@ -3,7 +3,7 @@ import classes from './Login.module.css';
 
 import loginImg from '../../assets/login.svg';
 import { Button, TextField } from '@material-ui/core';
-
+import wave from '../../assets/wave.svg';
 class Login extends Component {
 
     state = {
@@ -21,6 +21,8 @@ class Login extends Component {
 
         return (
             <div className={classes.login}>
+                <img className={classes.wave} src={wave} alt="login"></img>
+
 
                 <div className={classes.card}>
 
