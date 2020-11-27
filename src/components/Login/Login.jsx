@@ -9,23 +9,27 @@ class Login extends Component {
 
     state = {
         userId: 'AGS01',
-        password: 'ags@1234'
+        password: 'ags@1234',
+        loading: false
     }
 
     handleSubmitClick = async (e) => {
         e.preventDefault();
         console.log("clicked");
+        this.setState({ loading: true }, () => {
+            const { userId, password } = this.state;
+            instance.post('/login', { userId, password })
+                .then(res => {
+                    console.log(res);
+                    this.props.history.push('/');
+                    this.setState({ loading: false })
+                })
+                .catch(err => {
+                    this.setState({ loading: false })
+                    console.log(err);
+                })
+        })
 
-        const { userId, password } = this.state;
-        instance.post('/login', { userId, password })
-            .then(res => {
-                console.log(res);
-                this.props.history.push('/');
-
-            })
-            .catch(err => {
-                console.log(err);
-            })
     }
 
     render() {
