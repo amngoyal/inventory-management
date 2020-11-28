@@ -21,7 +21,7 @@ class Login extends Component {
             instance.post('/login', { userId, password })
                 .then(res => {
                     console.log(res);
-                    this.props.history.push('/');
+                    this.props.history.push('/home/products');
                     this.setState({ loading: false })
                 })
                 .catch(err => {
