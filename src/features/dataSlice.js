@@ -12,6 +12,25 @@ export const dataSlice = createSlice({
         setProducts: (state, { payload }) => {
             state.products = payload
         },
+        updateProduct: (state, { payload }) => {
+            state.products = state.products.map(product => {
+                if (payload.objectId === product._id) {
+                    return {
+                        _id: payload.objectId,
+                        productName: payload.updatedData.productName,
+                        productId: payload.updatedData.productId,
+                        manufacturer: payload.updatedData.manufacturer,
+                        reOrderQty: payload.updatedData.reOrderQty,
+                        category: payload.updatedData.category,
+                    }
+                }
+                else
+                    return product
+            })
+        },
+        deleteProduct: (state, { payload }) => {
+            state.products = state.products.filter(product => product._id !== payload._id);
+        },
         setStock: (state, { payload }) => {
             state.stock = payload
         },
@@ -24,7 +43,10 @@ export const dataSlice = createSlice({
     },
 });
 
-export const { setProducts, setStock, setPurchaseOrderReport, setSuppliers } = dataSlice.actions;
+export const { setProducts, updateProduct, deleteProduct,
+    setStock,
+    setPurchaseOrderReport,
+    setSuppliers } = dataSlice.actions;
 
 export const selectProducts = state => state.data.products;
 export const selectPurchaseOrderReport = state => state.data.purchaseOrderReport;

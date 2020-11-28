@@ -3,7 +3,7 @@ import { Cancel, Delete, Done, Edit } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import instance from '../../axios';
-import { selectProducts, setProducts } from '../../features/dataSlice';
+import { deleteProduct, selectProducts, setProducts, updateProduct } from '../../features/dataSlice';
 
 const useStyles = makeStyles({
     table: {
@@ -62,7 +62,8 @@ function ProductsTable() {
     const onEditedRowSave = async (e, product, index) => {
 
         try {
-            let res = await instance.post('/update-product', {
+
+            const updateData = {
                 objectId: editedFormData._id,
                 updatedData: {
                     productId: editedFormData.productId,
@@ -71,7 +72,11 @@ function ProductsTable() {
                     category: editedFormData.category,
                     reOrderQty: editedFormData.reOrderQty
                 }
-            })
+            }
+
+            let res = await instance.post('/update-product', updateData)
+
+            dispatch(updateProduct(updateData))
 
             console.log(res);
 
@@ -96,6 +101,7 @@ function ProductsTable() {
         try {
             const res = await instance.post('/delete-product', { objectId: product._id })
             console.log(res);
+            dispatch(deleteProduct({ _id: product._id }))
         }
         catch (err) {
             console.log(err);
