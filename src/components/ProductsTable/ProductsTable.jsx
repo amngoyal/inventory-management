@@ -1,4 +1,4 @@
-import { IconButton, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from '@material-ui/core'
+import { IconButton, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Tooltip } from '@material-ui/core'
 import { Cancel, Delete, Done, Edit } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
@@ -185,25 +185,33 @@ function ProductsTable() {
 
                                     {!isEditable ?
                                         <>
-                                            <IconButton onClick={e => handleProductEdit(e, product, index)}>
-                                                <Edit />
-                                            </IconButton>
+                                            <Tooltip title="Edit" arrow>
+                                                <IconButton onClick={e => handleProductEdit(e, product, index)}>
+                                                    <Edit />
+                                                </IconButton>
+                                            </Tooltip>
 
-                                            <IconButton onClick={e => handleProductDelete(e, product)}>
-                                                <Delete />
-                                            </IconButton>
+                                            <Tooltip title="Delete" arrow>
+                                                <IconButton onClick={e => handleProductDelete(e, product)}>
+                                                    <Delete />
+                                                </IconButton>
+                                            </Tooltip>
                                         </>
                                         :
                                         <>
                                             {
                                                 index === editableRowIndex ?
                                                     <>
-                                                        <IconButton onClick={e => onEditedRowSave(e, product, index)}>
-                                                            <Done />
-                                                        </IconButton>
-                                                        <IconButton onClick={e => handleCancelEditing()}>
-                                                            <Cancel />
-                                                        </IconButton>
+                                                        <Tooltip title="Save" arrow>
+                                                            <IconButton onClick={e => onEditedRowSave(e, product, index)}>
+                                                                <Done />
+                                                            </IconButton>
+                                                        </Tooltip>
+                                                        <Tooltip title="Cancel" arrow>
+                                                            <IconButton onClick={e => handleCancelEditing()}>
+                                                                <Cancel />
+                                                            </IconButton>
+                                                        </Tooltip>
                                                     </>
                                                     : null
                                             }

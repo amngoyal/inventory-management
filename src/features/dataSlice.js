@@ -34,6 +34,20 @@ export const dataSlice = createSlice({
         setStock: (state, { payload }) => {
             state.stock = payload
         },
+        updateStock: (state, { payload }) => {
+            state.stock = state.stock.map(el => {
+                if (payload.objectId === el._id) {
+                    return {
+                        ...el,
+                        qtySold: payload.updatedData.qtySold,
+                        orderedQty: payload.updatedData.orderedQty,
+                        balance: payload.updatedData.balance
+                    }
+                }
+                else
+                    return el
+            })
+        },
         setPurchaseOrderReport: (state, { payload }) => {
             state.purchaseOrderReport = payload
         },
@@ -64,7 +78,7 @@ export const dataSlice = createSlice({
 });
 
 export const { setProducts, updateProduct, deleteProduct,
-    setStock,
+    setStock, updateStock,
     setPurchaseOrderReport,
     setSuppliers, updateSupplier, deleteSupplier } = dataSlice.actions;
 

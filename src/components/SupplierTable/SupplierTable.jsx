@@ -228,13 +228,13 @@ function ProductsTable() {
                                                 index === editableRowIndex ?
                                                     <>
 
-                                                        <Tooltip title="Delete" arrow>
+                                                        <Tooltip title="Save" arrow>
                                                             <IconButton onClick={e => onEditedRowSave(e, supplier, index)}>
                                                                 <Done />
                                                             </IconButton>
                                                         </Tooltip>
 
-                                                        <Tooltip title="Delete" arrow>
+                                                        <Tooltip title="Cancel" arrow>
                                                             <IconButton onClick={e => handleCancelEditing()}>
                                                                 <Cancel />
                                                             </IconButton>
