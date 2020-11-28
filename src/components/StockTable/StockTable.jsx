@@ -1,9 +1,9 @@
 import { Button, IconButton, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Tooltip } from '@material-ui/core'
-import { Cancel, Delete, Done, Edit } from '@material-ui/icons';
+import { Cancel,  Done } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import instance from '../../axios';
-import { selectSuppliers, setSuppliers, updateSupplier, deleteSupplier, selectStock, setStock, updateStock } from '../../features/dataSlice';
+import {  selectStock, setStock, updateStock } from '../../features/dataSlice';
 
 const useStyles = makeStyles({
     table: {
