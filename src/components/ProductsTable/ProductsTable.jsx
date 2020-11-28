@@ -1,5 +1,5 @@
 import { IconButton, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from '@material-ui/core'
-import { Delete, Done, Edit } from '@material-ui/icons';
+import { Cancel, Delete, Done, Edit } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import instance from '../../axios';
@@ -38,6 +38,17 @@ function ProductsTable() {
         }
     }, [products, dispatch])
 
+    const handleCancelEditing = () => {
+        setIsEditable(false);
+        setEditableRowIndex(-1);
+        setEditedFormData({
+            productName: '',
+            manufacturer: '',
+            category: '',
+            reOrderQty: ''
+        })
+    }
+
     const handleProductEdit = (e, product, index) => {
         e.preventDefault();
 
@@ -72,11 +83,25 @@ function ProductsTable() {
                 category: '',
                 reOrderQty: ''
             })
-           
+
 
         } catch (err) {
             console.log(err);
+            alert("unable to edit");
         }
+    }
+
+    const handleProductDelete = async (e, product) => {
+
+        try {
+            const res = await instance.post('/delete-product', { objectId: product._id })
+            console.log(res);
+        }
+        catch (err) {
+            console.log(err);
+            alert("error in deleting product")
+        }
+
     }
 
     return (
@@ -158,7 +183,7 @@ function ProductsTable() {
                                                 <Edit />
                                             </IconButton>
 
-                                            <IconButton>
+                                            <IconButton onClick={e => handleProductDelete(e, product)}>
                                                 <Delete />
                                             </IconButton>
                                         </>
@@ -170,8 +195,8 @@ function ProductsTable() {
                                                         <IconButton onClick={e => onEditedRowSave(e, product, index)}>
                                                             <Done />
                                                         </IconButton>
-                                                        <IconButton>
-                                                            <Delete />
+                                                        <IconButton onClick={e => handleCancelEditing()}>
+                                                            <Cancel />
                                                         </IconButton>
                                                     </>
                                                     : null
