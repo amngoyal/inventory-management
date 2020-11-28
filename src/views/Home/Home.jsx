@@ -78,19 +78,19 @@ function Home(props) {
                 </div>
             <Divider />
             <List>
-                <ListItem button onClick={e => { props.history.push('/home/products'); handleDrawerToggle() }}>
+                <ListItem button onClick={e => { props.history.push('/home/products'); setMobileOpen(false) }}>
                     <ListItemIcon><ViewList /></ListItemIcon>
                     <ListItemText primary="Products" />
                 </ListItem>
-                <ListItem button onClick={e => { props.history.push('/home/suppliers'); handleDrawerToggle() }}>
+                <ListItem button onClick={e => { props.history.push('/home/suppliers'); setMobileOpen(false) }}>
                     <ListItemIcon><LocalShipping /></ListItemIcon>
                     <ListItemText primary="Suppliers" />
                 </ListItem>
-                <ListItem button onClick={e => { props.history.push('/home/stock'); handleDrawerToggle() }}>
+                <ListItem button onClick={e => { props.history.push('/home/stock'); setMobileOpen(false) }}>
                     <ListItemIcon> <HorizontalSplit /></ListItemIcon>
                     <ListItemText primary="Stock" />
                 </ListItem>
-                <ListItem button onClick={e => { props.history.push('/home/por'); handleDrawerToggle() }}>
+                <ListItem button onClick={e => { props.history.push('/home/por'); setMobileOpen(false) }}>
                     <ListItemIcon> <Assignment /></ListItemIcon>
                     <ListItemText primary="Purchase Order Report" />
                 </ListItem>
