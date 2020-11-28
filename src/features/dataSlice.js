@@ -40,13 +40,33 @@ export const dataSlice = createSlice({
         setSuppliers: (state, { payload }) => {
             state.suppliers = payload
         },
+        updateSupplier: (state, { payload }) => {
+            state.suppliers = state.suppliers.map(supplier => {
+                if (payload.objectId === supplier._id) {
+                    return {
+                        _id: payload.objectId,
+                        productName: payload.updatedData.productName,
+                        productId: payload.updatedData.productId,
+                        manufacturer: payload.updatedData.manufacturer,
+                        supplier: payload.updatedData.supplier,
+                        moq: payload.updatedData.moq,
+                        leadTime: payload.updatedData.leadTime,
+                    }
+                }
+                else
+                    return supplier
+            })
+        },
+        deleteSupplier: (state, { payload }) => {
+            state.suppliers = state.suppliers.filter(supplier => supplier._id !== payload._id);
+        },
     },
 });
 
 export const { setProducts, updateProduct, deleteProduct,
     setStock,
     setPurchaseOrderReport,
-    setSuppliers } = dataSlice.actions;
+    setSuppliers, updateSupplier, deleteSupplier } = dataSlice.actions;
 
 export const selectProducts = state => state.data.products;
 export const selectPurchaseOrderReport = state => state.data.purchaseOrderReport;
