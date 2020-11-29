@@ -61,14 +61,14 @@ class Login extends Component {
 
                     <div className={classes.cardRight}>
 
-                        <h1>Aggrawal Provision Store</h1>
+                        <h1>XYZ PROVISION STORE</h1>
 
                         <form className={classes.form} onSubmit={this.handleSubmitClick}>
 
                             <TextField
                                 className={classes.formInput}
                                 variant="outlined"
-                                placeholder="User Id"
+                                label="User Id"
                                 value={userId}
                                 onChange={(e) => this.setState({ userId: e.target.value.toUpperCase() })}
                             />
@@ -76,7 +76,7 @@ class Login extends Component {
                             <TextField
                                 className={classes.formInput}
                                 variant="outlined"
-                                placeholder="Password"
+                                label="Password"
                                 type="password"
                                 value={password}
                                 onChange={(e) => this.setState({ password: e.target.value })}
