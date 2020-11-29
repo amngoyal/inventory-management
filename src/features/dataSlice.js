@@ -43,6 +43,8 @@ export const dataSlice = createSlice({
                         orderedQty: payload.updatedData.orderedQty,
                         balance: payload.updatedData.balance
                     }
+
+                    
                 }
                 else
                     return el

@@ -36,7 +36,7 @@ function ProductsTable() {
 
         return () => {
         }
-    }, [products, dispatch])
+    }, [products.length, dispatch])
 
     const handleCancelEditing = () => {
         setIsEditable(false);

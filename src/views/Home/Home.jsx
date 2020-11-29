@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
@@ -19,8 +19,19 @@ import { Route, Switch, withRouter } from 'react-router';
 import SupplierTable from '../../components/SupplierTable/SupplierTable';
 import StockTable from '../../components/StockTable/StockTable';
 import PurchaseOrderReport from '../../components/PurchaseOrderReport/PurchaseOrderReport';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField } from '@material-ui/core';
+import instance from '../../axios';
 
 const drawerWidth = 220;
+
+function generateProductId() {
+    var digits = '0123456789';
+    let productId = '';
+    for (let i = 0; i < 4; i++) {
+        productId += digits[Math.floor(Math.random() * 10)];
+    }
+    return productId;
+}
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -64,10 +75,52 @@ function Home(props) {
     const classes = useStyles();
     const theme = useTheme();
     const [mobileOpen, setMobileOpen] = React.useState(false);
+    const [openDialog, setOpenDialog] = React.useState(false)
+    const [addProductForm, setAddProductForm] = useState({
+        productId: null,
+        productName: '',
+        manufacturer: '',
+        category: '',
+        reOrderQty: '',
+        supplier: '',
+        moq: '',
+        leadTime: '',
+        orderedQty: '',
+        qtySold: ''
+    })
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
+
+    const handleDialogClose = () => setOpenDialog(false)
+    const handleDialogOpen = () => {
+        if (addProductForm.productId == null)
+            setAddProductForm({ ...addProductForm, productId: 'PI-' + generateProductId() })
+        setOpenDialog(true)
+    }
+
+    const handleAddProduct = () => {
+        instance.post('add-product', addProductForm).then(res => {
+            console.log(res);
+            setOpenDialog(false)
+            setAddProductForm({
+                productId: null,
+                productName: '',
+                manufacturer: '',
+                category: '',
+                reOrderQty: '',
+                supplier: '',
+                moq: '',
+                leadTime: '',
+                orderedQty: '',
+                qtySold: ''
+            })
+        }).catch(err => {
+            console.log(err);
+            alert("error in adding product")
+        })
+    }
 
     const drawer = (
         <div>
@@ -118,6 +171,9 @@ function Home(props) {
                     <Typography variant="h6" noWrap>
                         Aggarwal Store
           </Typography>
+                    <Button variant="contained" onClick={handleDialogOpen}>
+                        Add Product
+          </Button>
                 </Toolbar>
             </AppBar>
             <nav className={classes.drawer} aria-label="mailbox folders">
@@ -168,6 +224,132 @@ function Home(props) {
                     </Route>
                 </Switch>
             </main>
+            <Dialog fullWidth open={openDialog}
+                onClose={handleDialogClose} aria-labelledby="form-dialog-title">
+                <DialogTitle id="form-dialog-title">Add New Product</DialogTitle>
+                <DialogContent>
+                    <Grid container spacing={1}>
+                        <Grid item xs={12}>
+                            <TextField
+                                autoFocus
+                                variant="outlined"
+                                margin="dense"
+                                value={addProductForm.productId}
+                                label="Product ID"
+                                disabled
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                autoFocus
+                                variant="outlined"
+                                margin="dense"
+                                value={addProductForm.productName}
+                                label="Product Name"
+                                onChange={(e) => setAddProductForm({ ...addProductForm, productName: e.target.value })}
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <TextField
+                                autoFocus
+                                variant="outlined"
+                                margin="dense"
+                                value={addProductForm.manufacturer}
+                                label="Manufacturer"
+                                onChange={(e) => setAddProductForm({ ...addProductForm, manufacturer: e.target.value })}
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <TextField
+                                autoFocus
+                                variant="outlined"
+                                margin="dense"
+                                value={addProductForm.category}
+                                label="Category"
+                                onChange={(e) => setAddProductForm({ ...addProductForm, category: e.target.value })}
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <TextField
+                                autoFocus
+                                variant="outlined"
+                                margin="dense"
+                                value={addProductForm.reOrderQty}
+                                label="Re-order Qty"
+                                onChange={(e) => setAddProductForm({ ...addProductForm, reOrderQty: e.target.value })}
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <TextField
+                                autoFocus
+                                variant="outlined"
+                                margin="dense"
+                                value={addProductForm.supplier}
+                                label="Supplier"
+                                onChange={(e) => setAddProductForm({ ...addProductForm, supplier: e.target.value })}
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <TextField
+                                autoFocus
+                                variant="outlined"
+                                margin="dense"
+                                value={addProductForm.moq}
+                                label="MOQ"
+                                onChange={(e) => setAddProductForm({ ...addProductForm, moq: e.target.value })}
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <TextField
+                                autoFocus
+                                variant="outlined"
+                                margin="dense"
+                                value={addProductForm.leadTime}
+                                label="Lead Time"
+                                onChange={(e) => setAddProductForm({ ...addProductForm, leadTime: e.target.value })}
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <TextField
+                                autoFocus
+                                variant="outlined"
+                                margin="dense"
+                                value={addProductForm.orderedQty}
+                                label="Ordered Qty"
+                                onChange={(e) => setAddProductForm({ ...addProductForm, orderedQty: e.target.value })}
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <TextField
+                                autoFocus
+                                variant="outlined"
+                                margin="dense"
+                                value={addProductForm.qtySold}
+                                label="Qty Sold"
+                                onChange={(e) => setAddProductForm({ ...addProductForm, qtySold: e.target.value })}
+                                fullWidth
+                            />
+                        </Grid>
+                    </Grid>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleDialogClose} color="primary">
+                        Cancel
+          </Button>
+                    <Button onClick={handleAddProduct} color="primary">
+                        Add
+          </Button>
+                </DialogActions>
+            </Dialog>
         </div>
     );
 }
