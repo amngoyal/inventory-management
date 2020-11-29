@@ -100,7 +100,7 @@ function Home(props) {
     };
 
     const handleDialogClose = () => setOpenDialog(false)
-    
+
     const handleDialogOpen = () => {
         if (addProductForm.productId === '')
             setAddProductForm({ ...addProductForm, productId: 'PI-' + generateProductId() })
@@ -160,8 +160,7 @@ function Home(props) {
             <div className={classes.toolbar}
                 style={{ display: 'flex', placeItems: 'center', placeContent: 'center' }}
             >
-                Hey, Aman
-                </div>
+            </div>
             <Divider />
             <List>
                 <ListItem button onClick={e => { props.history.push('/home/products'); setMobileOpen(false) }}>
@@ -191,7 +190,7 @@ function Home(props) {
         <div className={classes.root}>
             <CssBaseline />
             <AppBar position="fixed" className={classes.appBar}>
-                <Toolbar>
+                <Toolbar style={{display: 'flex', justifyContent: 'space-between', margin: '0 30px'}}>
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
@@ -203,10 +202,10 @@ function Home(props) {
                     </IconButton>
                     <Typography variant="h6" noWrap>
                         Aggarwal Store
-          </Typography>
+                    </Typography>
                     <Button variant="contained" onClick={handleDialogOpen}>
                         Add Product
-          </Button>
+                   </Button>
                 </Toolbar>
             </AppBar>
             <nav className={classes.drawer} aria-label="mailbox folders">

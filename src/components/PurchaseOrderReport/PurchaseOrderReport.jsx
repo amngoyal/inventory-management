@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -6,7 +6,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import { Button } from '@material-ui/core';
+import { Button, Dialog, DialogContent, DialogTitle } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectPurchaseOrderReport, setPurchaseOrderReport } from '../../features/dataSlice';
 import instance from '../../axios';
@@ -22,6 +22,9 @@ export default function PurchaseOrderReport() {
     const classes = useStyles();
     const purchaseOrderReport = useSelector(selectPurchaseOrderReport)
 
+    const [openDialog, setOpenDialog] = useState(false)
+    const [allSuppliersArr, setAllSuppliersArr] = useState([])
+
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -33,6 +36,13 @@ export default function PurchaseOrderReport() {
         return () => {
         }
     }, [dispatch])
+
+    const handleDialogOpen = (e, allSuppliers) => {
+        setAllSuppliersArr(allSuppliers)
+        setOpenDialog(true);
+    }
+
+    const handleDialogClose = () => setOpenDialog(false);
 
     return (
         <div>
@@ -46,29 +56,29 @@ export default function PurchaseOrderReport() {
                             <TableCell align="center">Manufacturer</TableCell>
                             <TableCell align="center">Re-order Qty</TableCell>
                             <TableCell align="center">Balance Qty</TableCell>
-                            <TableCell align="center">Action</TableCell>
+                            <TableCell align="center">Vendor</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {purchaseOrderReport.map((supplier, index) => (
-                            <TableRow key={supplier.productId}>
+                        {purchaseOrderReport.map((por, index) => (
+                            <TableRow key={por.productId}>
                                 <TableCell align="left">
-                                    {supplier.productId}
+                                    {por.productId}
                                 </TableCell>
                                 <TableCell component="th" scope="row">
-                                    {supplier.productName}
+                                    {por.productName}
                                 </TableCell>
                                 <TableCell align="center">
-                                    {supplier.manufacturer}
+                                    {por.manufacturer}
                                 </TableCell>
                                 <TableCell align="center">
-                                    {supplier.reOrderQty}
+                                    {por.reOrderQty}
                                 </TableCell>
                                 <TableCell align="center">
-                                    {supplier.balance}
+                                    {por.balance}
                                 </TableCell>
                                 <TableCell align="center">
-                                    <Button>View</Button>
+                                    <Button onClick={(e) => handleDialogOpen(e, por.allSuppliers)}>View</Button>
                                 </TableCell>
                             </TableRow>
                         ))}
@@ -76,6 +86,34 @@ export default function PurchaseOrderReport() {
                     </TableBody>
                 </Table>
             </TableContainer>
+
+            <Dialog fullWidth open={openDialog}
+                onClose={handleDialogClose} aria-labelledby="form-dialog-title">
+                <DialogTitle >Vendors for this product </DialogTitle>
+                <DialogContent>
+                    <TableContainer>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Supplier</TableCell>
+                                    <TableCell>MOQ</TableCell>
+                                    <TableCell>Lead Time</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {allSuppliersArr.map((supp, index) => {
+                                    return (
+                                        <TableRow key={index}>
+                                            <TableCell>{supp.supplier}</TableCell>
+                                            <TableCell>{supp.moq}</TableCell>
+                                            <TableCell>{supp.leadTime} Hrs</TableCell>
+                                        </TableRow>)
+                                })}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </DialogContent>
+            </Dialog>
         </div>
     );
 }
