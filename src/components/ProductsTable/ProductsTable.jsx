@@ -110,9 +110,9 @@ function ProductsTable() {
     }
 
     return (
-        <div>
+        <div style={{padding: '10px'}}>
 
-            <h1>Products</h1>
+            <h1 style={{marginBottom: '20px', fontSize: '36px'}}>Products</h1>
 
             <TableContainer >
                 <Table className={classes.table} aria-label="products table">
