@@ -100,7 +100,7 @@ function ProductsTable() {
         if (window.confirm('Are you sure you want to delete this product from database?')) {
 
             try {
-                const res = await instance.post('/delete-product', { objectId: product._id })
+                const res = await instance.post('/delete-product', { objectId: product._id, productId: product.productId })
                 console.log(res);
                 dispatch(deleteProduct({ _id: product._id }))
             }
