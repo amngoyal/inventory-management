@@ -21,8 +21,8 @@ import StockTable from '../../components/StockTable/StockTable';
 import PurchaseOrderReport from '../../components/PurchaseOrderReport/PurchaseOrderReport';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField } from '@material-ui/core';
 import instance from '../../axios';
-import { useDispatch, useSelector } from 'react-redux';
-import { addProduct, selectPurchaseOrderReport, setPurchaseOrderReport } from '../../features/dataSlice';
+import { useDispatch } from 'react-redux';
+import { addProduct } from '../../features/dataSlice';
 
 const drawerWidth = 220;
 
