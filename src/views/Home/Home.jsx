@@ -109,13 +109,20 @@ function Home(props) {
 
     const handleAddProduct = () => {
 
+        const { productId, productName, manufacturer, reOrderQty, supplier, moq, leadTime, orderedQty,
+            qtySold } = addProductForm;
+
+        if (productId === "" || productName === '' || manufacturer === '' || reOrderQty === ''
+            || supplier === '' || moq === '' || leadTime === '' || orderedQty === '' || qtySold === '') {
+            alert("Complete the form to add a product")
+            return;
+        }
+
         instance.post('add-product', addProductForm).then(res => {
             console.log(res);
 
             dispatch(addProduct(addProductForm));
 
-            const { productId, productName, manufacturer, reOrderQty, supplier, moq, leadTime, orderedQty,
-                qtySold } = addProductForm;
 
             const balance = orderedQty - qtySold;
             if (balance <= reOrderQty) {

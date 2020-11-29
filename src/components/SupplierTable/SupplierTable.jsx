@@ -143,9 +143,16 @@ function SupplierTable() {
 
     const handleAddSupplier = async (e) => {
         e.preventDefault();
+
+        const { product, supplier, leadTime, moq } = addSupplierForm
+
+        if (supplier === '' || moq === '' || leadTime === '' || product == null) {
+            alert("Complete the form to add supplier")
+            return;
+        }
+
         try {
 
-            const { product, supplier, leadTime, moq } = addSupplierForm
             console.log(addSupplierForm);
             const { productId, productName, manufacturer } = product
 
