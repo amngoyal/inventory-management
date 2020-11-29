@@ -125,7 +125,7 @@ function SupplierTable() {
     }
 
     const handleProductDelete = async (e, supplier) => {
-        if (window.confirm('Are you sure you want to delete this product from database?')) {
+        if (window.confirm('Are you sure you want to delete this Supplier from database?')) {
             try {
                 const res = await instance.post('/delete-supplier', { objectId: supplier._id })
                 console.log(res);
