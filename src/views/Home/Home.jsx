@@ -21,8 +21,8 @@ import StockTable from '../../components/StockTable/StockTable';
 import PurchaseOrderReport from '../../components/PurchaseOrderReport/PurchaseOrderReport';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField } from '@material-ui/core';
 import instance from '../../axios';
-import { useDispatch } from 'react-redux';
-import { addProduct } from '../../features/dataSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { addProduct, selectPurchaseOrderReport, setPurchaseOrderReport } from '../../features/dataSlice';
 
 const drawerWidth = 220;
 
@@ -77,12 +77,13 @@ function Home(props) {
     const classes = useStyles();
 
     const dispatch = useDispatch();
+    // const purchaseOrderReport = useSelector(selectPurchaseOrderReport);
 
     const theme = useTheme();
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const [openDialog, setOpenDialog] = React.useState(false)
     const [addProductForm, setAddProductForm] = useState({
-        productId: null,
+        productId: '',
         productName: '',
         manufacturer: '',
         category: '',
@@ -100,20 +101,43 @@ function Home(props) {
 
     const handleDialogClose = () => setOpenDialog(false)
     const handleDialogOpen = () => {
-        if (addProductForm.productId == null)
+        if (addProductForm.productId === '')
             setAddProductForm({ ...addProductForm, productId: 'PI-' + generateProductId() })
         setOpenDialog(true)
     }
 
     const handleAddProduct = () => {
+
         instance.post('add-product', addProductForm).then(res => {
             console.log(res);
 
             dispatch(addProduct(addProductForm));
 
+            const { productId, productName, manufacturer, reOrderQty, supplier, moq, leadTime, orderedQty,
+                qtySold } = addProductForm;
+
+            const balance = orderedQty - qtySold;
+            if (balance <= reOrderQty) {
+
+                let allSuppliers = [{ supplier, moq, leadTime }]
+                let por = {
+                    productId, productName, manufacturer, reOrderQty, balance, allSuppliers
+                }
+
+                instance.post('/create-por', por)
+                    .then(res => {
+                        console.log("por created")
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+
+            }
+
+
             setOpenDialog(false)
             setAddProductForm({
-                productId: null,
+                productId: '',
                 productName: '',
                 manufacturer: '',
                 category: '',
@@ -287,6 +311,7 @@ function Home(props) {
                                 variant="outlined"
                                 margin="dense"
                                 value={addProductForm.reOrderQty}
+                                type="number"
                                 label="Re-order Qty"
                                 onChange={(e) => setAddProductForm({ ...addProductForm, reOrderQty: e.target.value })}
                                 fullWidth
@@ -308,6 +333,7 @@ function Home(props) {
                                 autoFocus
                                 variant="outlined"
                                 margin="dense"
+                                type="number"
                                 value={addProductForm.moq}
                                 label="MOQ"
                                 onChange={(e) => setAddProductForm({ ...addProductForm, moq: e.target.value })}
@@ -319,6 +345,7 @@ function Home(props) {
                                 autoFocus
                                 variant="outlined"
                                 margin="dense"
+                                type="number"
                                 value={addProductForm.leadTime}
                                 label="Lead Time (in Hrs)"
                                 onChange={(e) => setAddProductForm({ ...addProductForm, leadTime: e.target.value })}
@@ -330,6 +357,7 @@ function Home(props) {
                                 autoFocus
                                 variant="outlined"
                                 margin="dense"
+                                type="number"
                                 value={addProductForm.orderedQty}
                                 label="Ordered Qty"
                                 onChange={(e) => setAddProductForm({ ...addProductForm, orderedQty: e.target.value })}
@@ -341,6 +369,7 @@ function Home(props) {
                                 autoFocus
                                 variant="outlined"
                                 margin="dense"
+                                type="number"
                                 value={addProductForm.qtySold}
                                 label="Qty Sold"
                                 onChange={(e) => setAddProductForm({ ...addProductForm, qtySold: e.target.value })}

@@ -11,7 +11,7 @@ export const dataSlice = createSlice({
     reducers: {
         addProduct: (state, { payload }) => {
 
-            const { productId, productName, manufacturer, category, reOrderQty,
+            const { productId, productName, manufacturer, reOrderQty,
                 supplier, moq, leadTime, orderedQty, qtySold } = payload
 
             state.products = state.products.concat({
@@ -99,6 +99,7 @@ export const dataSlice = createSlice({
         setPurchaseOrderReport: (state, { payload }) => {
             state.purchaseOrderReport = payload
         },
+
         setSuppliers: (state, { payload }) => {
             state.suppliers = payload
         },

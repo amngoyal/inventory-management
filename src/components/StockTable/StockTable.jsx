@@ -3,7 +3,7 @@ import { Cancel, Done } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import instance from '../../axios';
-import { selectStock, setStock, updateStock } from '../../features/dataSlice';
+import { selectStock, setProducts, setStock, updateStock } from '../../features/dataSlice';
 
 const useStyles = makeStyles({
     table: {
@@ -11,7 +11,7 @@ const useStyles = makeStyles({
     },
 });
 
-function ProductsTable() {
+function StockTable() {
     const classes = useStyles();
 
 
@@ -20,6 +20,7 @@ function ProductsTable() {
     const [editableRowIndex, setEditableRowIndex] = useState(-1);
 
     const [editedFormData, setEditedFormData] = useState({
+        productId: '',
         orderedQty: '',
         qtySold: ''
     })
@@ -32,7 +33,6 @@ function ProductsTable() {
     useEffect(() => {
 
         instance.get('/get-stock').then(res => {
-            console.log(res.data);
             dispatch(setStock(res.data))
         })
 
@@ -47,6 +47,7 @@ function ProductsTable() {
         setIsEditable(false);
         setEditableRowIndex(-1);
         setEditedFormData({
+            productId: '',
             orderedQty: '',
             qtySold: ''
         })
@@ -66,9 +67,17 @@ function ProductsTable() {
 
         try {
 
+            let productsArr = await instance.get('/get-products')
+            dispatch(setProducts(productsArr.data))
+
+            const products = productsArr.data;
+
+            const balance = editedFormData.orderedQty - editedFormData.qtySold
+
             const updateData = {
                 objectId: editedFormData._id,
                 updatedData: {
+                    productId: editedFormData.productId,
                     qtySold: editedFormData.qtySold,
                     orderedQty: editedFormData.orderedQty,
                     balance: editedFormData.orderedQty - editedFormData.qtySold
@@ -76,10 +85,22 @@ function ProductsTable() {
             }
 
             let res = await instance.post('/update-stock', updateData)
-
             dispatch(updateStock(updateData))
-
+            console.log("stock updated");
             console.log(res);
+
+            const product = products.filter(el => el.productId === editedFormData.productId)
+
+            if (!(balance <= product[0].reOrderQty)) {
+                instance.post('/delete-por', { productId: editedFormData.productId })
+                    .then(res => {
+                        console.log(res)
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            }
+
 
             setIsEditable(false);
             setEditableRowIndex(-1);
@@ -191,4 +212,4 @@ function ProductsTable() {
     )
 }
 
-export default ProductsTable
+export default StockTable

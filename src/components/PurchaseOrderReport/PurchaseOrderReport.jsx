@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -7,8 +7,9 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { Button } from '@material-ui/core';
-import { useSelector } from 'react-redux';
-import { selectPurchaseOrderReport } from '../../features/dataSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectPurchaseOrderReport, setPurchaseOrderReport } from '../../features/dataSlice';
+import instance from '../../axios';
 
 const useStyles = makeStyles({
     table: {
@@ -20,6 +21,18 @@ const useStyles = makeStyles({
 export default function PurchaseOrderReport() {
     const classes = useStyles();
     const purchaseOrderReport = useSelector(selectPurchaseOrderReport)
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+
+        instance.get('/get-purchase-report').then(res => {
+            dispatch(setPurchaseOrderReport(res.data));
+        })
+
+        return () => {
+        }
+    }, [dispatch])
 
     return (
         <div>
