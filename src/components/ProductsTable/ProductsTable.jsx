@@ -97,22 +97,26 @@ function ProductsTable() {
 
     const handleProductDelete = async (e, product) => {
 
-        try {
-            const res = await instance.post('/delete-product', { objectId: product._id })
-            console.log(res);
-            dispatch(deleteProduct({ _id: product._id }))
-        }
-        catch (err) {
-            console.log(err);
-            alert("error in deleting product")
+        if (window.confirm('Are you sure you want to delete this product from database?')) {
+
+            try {
+                const res = await instance.post('/delete-product', { objectId: product._id })
+                console.log(res);
+                dispatch(deleteProduct({ _id: product._id }))
+            }
+            catch (err) {
+                console.log(err);
+                alert("error in deleting product")
+            }
+
         }
 
     }
 
     return (
-        <div style={{padding: '10px'}}>
+        <div style={{ padding: '10px' }}>
 
-            <h1 style={{marginBottom: '20px', fontSize: '36px'}}>Products</h1>
+            <h1 style={{ marginBottom: '20px', fontSize: '36px' }}>Products</h1>
 
             <TableContainer >
                 <Table className={classes.table} aria-label="products table">

@@ -120,9 +120,9 @@ function StockTable() {
     }
 
     return (
-        <div>
+        <div style={{ padding: '10px' }}>
 
-            <h1>Stock</h1>
+            <h1 style={{ marginBottom: '20px', fontSize: '36px' }}>Stock</h1>
 
             <TableContainer >
                 <Table className={classes.table} aria-label="suppliers table">
@@ -179,7 +179,7 @@ function StockTable() {
                                 <TableCell align="center">
 
                                     {!isEditable ?
-                                        <Button onClick={e => handleProductEdit(e, supplier, index)} variant="outlined">Edit</Button>
+                                        <Button color="primary" onClick={e => handleProductEdit(e, supplier, index)} variant="outlined">Edit</Button>
                                         :
                                         <>
                                             {

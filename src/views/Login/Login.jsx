@@ -5,6 +5,7 @@ import loginImg from '../../assets/login.svg';
 import { Button, TextField } from '@material-ui/core';
 import wave from '../../assets/wave.svg';
 import instance from '../../axios';
+import { withRouter } from 'react-router';
 class Login extends Component {
 
     state = {
@@ -14,6 +15,7 @@ class Login extends Component {
     }
 
     handleSubmitClick = async (e) => {
+
         e.preventDefault();
         console.log("clicked");
         this.setState({ loading: true }, () => {
@@ -21,12 +23,22 @@ class Login extends Component {
             instance.post('/login', { userId, password })
                 .then(res => {
                     console.log(res);
+
                     this.props.history.push('/home/products');
+
                     this.setState({ loading: false })
                 })
                 .catch(err => {
                     this.setState({ loading: false })
-                    console.log(err);
+                    console.log(err.response);
+                    if (err.response) {
+                        if (err.response.status === 404) {
+                            alert('User not found.')
+                        }
+                        if (err.response.status === 400) {
+                            alert("Enter correct pasword.")
+                        }
+                    }
                 })
         })
 
@@ -65,6 +77,7 @@ class Login extends Component {
                                 className={classes.formInput}
                                 variant="outlined"
                                 placeholder="Password"
+                                type="password"
                                 value={password}
                                 onChange={(e) => this.setState({ password: e.target.value })}
                             />
@@ -78,4 +91,4 @@ class Login extends Component {
     }
 }
 
-export default Login;
+export default withRouter(Login);

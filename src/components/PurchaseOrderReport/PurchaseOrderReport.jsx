@@ -45,8 +45,8 @@ export default function PurchaseOrderReport() {
     const handleDialogClose = () => setOpenDialog(false);
 
     return (
-        <div>
-            <h1>Purchase Order Report</h1>
+        <div style={{ padding: '10px' }}>
+            <h1 style={{ marginBottom: '20px', fontSize: '36px' }}>Purchase Order Report</h1>
             <TableContainer>
                 <Table className={classes.table} aria-label="por table">
                     <TableHead>
@@ -78,7 +78,7 @@ export default function PurchaseOrderReport() {
                                     {por.balance}
                                 </TableCell>
                                 <TableCell align="center">
-                                    <Button onClick={(e) => handleDialogOpen(e, por.allSuppliers)}>View</Button>
+                                    <Button variant="outlined" color="primary" onClick={(e) => handleDialogOpen(e, por.allSuppliers)}>View</Button>
                                 </TableCell>
                             </TableRow>
                         ))}

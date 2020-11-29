@@ -11,7 +11,7 @@ class App extends PureComponent {
     return (
       <ThemeProvider theme={theme}>
         <Switch>
-          <Route path="/login" component={Login} />
+          <Route path="/" exact component={Login} />
           <Route path="/home" component={Home} />
         </Switch>
       </ThemeProvider>

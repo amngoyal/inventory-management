@@ -12,7 +12,7 @@ const useStyles = makeStyles({
     },
 });
 
-function ProductsTable() {
+function SupplierTable() {
     const classes = useStyles();
 
 
@@ -125,15 +125,16 @@ function ProductsTable() {
     }
 
     const handleProductDelete = async (e, supplier) => {
-
-        try {
-            const res = await instance.post('/delete-supplier', { objectId: supplier._id })
-            console.log(res);
-            dispatch(deleteSupplier({ _id: supplier._id }))
-        }
-        catch (err) {
-            console.log(err);
-            alert("error in deleting product")
+        if (window.confirm('Are you sure you want to delete this product from database?')) {
+            try {
+                const res = await instance.post('/delete-supplier', { objectId: supplier._id })
+                console.log(res);
+                dispatch(deleteSupplier({ _id: supplier._id }))
+            }
+            catch (err) {
+                console.log(err);
+                alert("error in deleting product")
+            }
         }
 
     }
@@ -171,11 +172,18 @@ function ProductsTable() {
     }
 
     return (
-        <div>
+        <div style={{ padding: '10px' }}>
 
-            <h1>Suppliers</h1>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+                <h1 style={{ marginBottom: '20px', fontSize: '36px' }}>Suppliers</h1>
 
-            <Button onClick={() => setOpenDialog(true)}>Add Supplier</Button>
+                <Button
+                    color="primary"
+                    style={{ transform: 'translateY(-6px)', marginLeft: '30px' }}
+                    variant="outlined"
+                    onClick={() => setOpenDialog(true)}
+                >Add Supplier</Button>
+            </div>
 
             <TableContainer >
                 <Table className={classes.table} aria-label="suppliers table">
@@ -366,4 +374,4 @@ function ProductsTable() {
     )
 }
 
-export default ProductsTable
+export default SupplierTable
