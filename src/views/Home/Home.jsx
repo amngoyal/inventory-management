@@ -100,6 +100,7 @@ function Home(props) {
     };
 
     const handleDialogClose = () => setOpenDialog(false)
+    
     const handleDialogOpen = () => {
         if (addProductForm.productId === '')
             setAddProductForm({ ...addProductForm, productId: 'PI-' + generateProductId() })

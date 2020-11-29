@@ -1,5 +1,6 @@
-import { IconButton, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Tooltip } from '@material-ui/core'
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Tooltip } from '@material-ui/core'
 import { Cancel, Delete, Done, Edit } from '@material-ui/icons';
+import { Autocomplete } from '@material-ui/lab';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import instance from '../../axios';
@@ -31,6 +32,15 @@ function ProductsTable() {
 
     const dispatch = useDispatch();
     const suppliers = useSelector(selectSuppliers);
+    const [allProducts, setAllProducts] = useState([])
+
+    const [openDialog, setOpenDialog] = React.useState(false)
+    const [addSupplierForm, setAddSupplierForm] = useState({
+        product: null,
+        supplier: '',
+        moq: '',
+        leadTime: '',
+    })
 
     useEffect(() => {
 
@@ -38,9 +48,17 @@ function ProductsTable() {
             dispatch(setSuppliers(res.data))
         })
 
+        instance.get('/get-products')
+            .then(res => {
+                setAllProducts(res.data)
+            })
+            .catch(err => {
+                console.log(err);
+            })
+
         return () => {
         }
-    }, [ dispatch])
+    }, [dispatch])
 
 
     // ************* Handlers ************************
@@ -120,10 +138,44 @@ function ProductsTable() {
 
     }
 
+    const handleDialogClose = () => setOpenDialog(false)
+
+    const handleAddSupplier = async (e) => {
+        e.preventDefault();
+        try {
+
+            const { product, supplier, leadTime, moq } = addSupplierForm
+            console.log(addSupplierForm);
+            const { productId, productName, manufacturer } = product
+
+            let newSupplier = {
+                productId, productName, manufacturer, supplier, leadTime, moq
+            }
+            let newSupplierRes = await instance.post('/add-supplier', { newSupplier })
+            console.log(newSupplierRes);
+
+            dispatch(setSuppliers(suppliers.concat(newSupplier)))
+
+            setOpenDialog(false);
+            setAddSupplierForm({
+                product: null,
+                supplier: '',
+                moq: '',
+                leadTime: '',
+            })
+        }
+        catch (err) {
+            console.log(err);
+            alert("Unable to add supplier")
+        }
+    }
+
     return (
         <div>
 
             <h1>Suppliers</h1>
+
+            <Button onClick={() => setOpenDialog(true)}>Add Supplier</Button>
 
             <TableContainer >
                 <Table className={classes.table} aria-label="suppliers table">
@@ -140,7 +192,7 @@ function ProductsTable() {
                     </TableHead>
                     <TableBody>
                         {suppliers.map((supplier, index) => (
-                            <TableRow key={supplier.productId}>
+                            <TableRow key={supplier.supplier}>
                                 <TableCell align="left">
                                     {supplier.productId}
                                 </TableCell>
@@ -248,6 +300,68 @@ function ProductsTable() {
                     </TableBody>
                 </Table>
             </TableContainer>
+
+            <Dialog fullWidth open={openDialog}
+                onClose={handleDialogClose} aria-labelledby="form-dialog-title">
+                <DialogTitle >Add New Supplier</DialogTitle>
+                <DialogContent>
+                    <Grid container spacing={1}>
+                        <Grid item xs={12}>
+                            <Autocomplete
+                                options={allProducts}
+                                value={addSupplierForm.product}
+                                onChange={(e, value) => setAddSupplierForm({ ...addSupplierForm, product: value })}
+                                getOptionLabel={(option) => option.productId}
+                                size="small"
+                                renderInput={(params) => <TextField {...params} label="Product ID" variant="outlined" />}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                autoFocus
+                                variant="outlined"
+                                margin="dense"
+                                value={addSupplierForm.supplier}
+                                label="Supplier"
+                                onChange={(e) => setAddSupplierForm({ ...addSupplierForm, supplier: e.target.value })}
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <TextField
+                                autoFocus
+                                variant="outlined"
+                                margin="dense"
+                                value={addSupplierForm.reOrderQty}
+                                type="number"
+                                label="MOQ"
+                                onChange={(e) => setAddSupplierForm({ ...addSupplierForm, moq: e.target.value })}
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <TextField
+                                autoFocus
+                                variant="outlined"
+                                margin="dense"
+                                type="number"
+                                value={addSupplierForm.leadTime}
+                                label="Lead Time (in Hrs)"
+                                onChange={(e) => setAddSupplierForm({ ...addSupplierForm, leadTime: e.target.value })}
+                                fullWidth
+                            />
+                        </Grid>
+                    </Grid>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleDialogClose} color="primary">
+                        Cancel
+                    </Button>
+                    <Button onClick={handleAddSupplier} color="primary">
+                        Add
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </div>
     )
 }
