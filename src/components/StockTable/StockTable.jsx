@@ -31,16 +31,14 @@ function ProductsTable() {
 
     useEffect(() => {
 
-        if (stock.length === 0) {
-            instance.get('/get-stock').then(res => {
-                console.log(res.data);
-                dispatch(setStock(res.data))
-            })
-        }
+        instance.get('/get-stock').then(res => {
+            console.log(res.data);
+            dispatch(setStock(res.data))
+        })
 
         return () => {
         }
-    }, [stock.length, dispatch])
+    }, [dispatch])
 
 
     // ************* Handlers ************************

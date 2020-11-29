@@ -34,15 +34,13 @@ function ProductsTable() {
 
     useEffect(() => {
 
-        if (suppliers.length === 0) {
-            instance.get('/get-suppliers').then(res => {
-                dispatch(setSuppliers(res.data))
-            })
-        }
+        instance.get('/get-suppliers').then(res => {
+            dispatch(setSuppliers(res.data))
+        })
 
         return () => {
         }
-    }, [suppliers, dispatch])
+    }, [ dispatch])
 
 
     // ************* Handlers ************************

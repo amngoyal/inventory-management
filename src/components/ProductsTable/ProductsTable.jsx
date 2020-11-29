@@ -28,15 +28,14 @@ function ProductsTable() {
 
     useEffect(() => {
 
-        if (products.length === 0) {
-            instance.get('/get-products').then(res => {
-                dispatch(setProducts(res.data))
-            })
-        }
+        instance.get('/get-products').then(res => {
+            dispatch(setProducts(res.data))
+        })
+
 
         return () => {
         }
-    }, [products.length, dispatch])
+    }, [dispatch])
 
     const handleCancelEditing = () => {
         setIsEditable(false);

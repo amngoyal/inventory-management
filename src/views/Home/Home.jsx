@@ -21,6 +21,8 @@ import StockTable from '../../components/StockTable/StockTable';
 import PurchaseOrderReport from '../../components/PurchaseOrderReport/PurchaseOrderReport';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField } from '@material-ui/core';
 import instance from '../../axios';
+import { useDispatch } from 'react-redux';
+import { addProduct } from '../../features/dataSlice';
 
 const drawerWidth = 220;
 
@@ -73,6 +75,9 @@ const useStyles = makeStyles((theme) => ({
 function Home(props) {
     const { window } = props;
     const classes = useStyles();
+
+    const dispatch = useDispatch();
+
     const theme = useTheme();
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const [openDialog, setOpenDialog] = React.useState(false)
@@ -103,6 +108,9 @@ function Home(props) {
     const handleAddProduct = () => {
         instance.post('add-product', addProductForm).then(res => {
             console.log(res);
+
+            dispatch(addProduct(addProductForm));
+
             setOpenDialog(false)
             setAddProductForm({
                 productId: null,
@@ -312,7 +320,7 @@ function Home(props) {
                                 variant="outlined"
                                 margin="dense"
                                 value={addProductForm.leadTime}
-                                label="Lead Time"
+                                label="Lead Time (in Hrs)"
                                 onChange={(e) => setAddProductForm({ ...addProductForm, leadTime: e.target.value })}
                                 fullWidth
                             />

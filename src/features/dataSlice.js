@@ -9,6 +9,52 @@ export const dataSlice = createSlice({
         stock: []
     },
     reducers: {
+        addProduct: (state, { payload }) => {
+
+            const { productId, productName, manufacturer, category, reOrderQty,
+                supplier, moq, leadTime, orderedQty, qtySold } = payload
+
+            state.products = state.products.concat({
+                productId: payload.productId,
+                productName: payload.productName,
+                manufacturer: payload.manufacturer,
+                category: payload.category,
+                reOrderQty: payload.reOrderQty,
+            })
+
+            state.suppliers = state.suppliers.concat({
+                productId: payload.productId,
+                productName: payload.productName,
+                manufacturer: payload.manufacturer,
+                supplier: payload.supplier,
+                moq: payload.moq,
+                leadTime: payload.leadTime,
+            })
+
+            const balance = orderedQty - qtySold
+            state.stock = state.stock.concat({
+                productId: payload.productId,
+                productName: payload.productName,
+                manufacturer: payload.manufacturer,
+                orderedQty: payload.orderedQty,
+                qtySold: payload.qtySold,
+                balance: balance,
+            })
+
+            if (balance !== 0 && balance <= reOrderQty) {
+                state.purchaseOrderReport = state.purchaseOrderReport.concat({
+                    productId,
+                    productName,
+                    manufacturer,
+                    reOrderQty,
+                    balance,
+                    supplier,
+                    moq,
+                    leadTime
+                })
+            }
+
+        },
         setProducts: (state, { payload }) => {
             state.products = payload
         },
@@ -44,7 +90,7 @@ export const dataSlice = createSlice({
                         balance: payload.updatedData.balance
                     }
 
-                    
+
                 }
                 else
                     return el
@@ -79,7 +125,7 @@ export const dataSlice = createSlice({
     },
 });
 
-export const { setProducts, updateProduct, deleteProduct,
+export const { addProduct, setProducts, updateProduct, deleteProduct,
     setStock, updateStock,
     setPurchaseOrderReport,
     setSuppliers, updateSupplier, deleteSupplier } = dataSlice.actions;
