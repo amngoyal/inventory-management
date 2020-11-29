@@ -190,7 +190,7 @@ function Home(props) {
         <div className={classes.root}>
             <CssBaseline />
             <AppBar position="fixed" className={classes.appBar}>
-                <Toolbar style={{display: 'flex', justifyContent: 'space-between', margin: '0 30px'}}>
+                <Toolbar style={{ display: 'flex', justifyContent: 'space-between', margin: '0 30px' }}>
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
@@ -201,7 +201,7 @@ function Home(props) {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap>
-                        Aggarwal Store
+                        XYZ PROVISION STORE
                     </Typography>
                     <Button variant="contained" onClick={handleDialogOpen}>
                         Add Product
